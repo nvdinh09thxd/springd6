@@ -1,6 +1,5 @@
 package edu.vinaenter.controllers;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.vinaenter.commons.DaoUtil;
 import edu.vinaenter.constants.MessageConstant;
-import edu.vinaenter.daos.CategoryDao;
 import edu.vinaenter.exceptions.NameException;
 import edu.vinaenter.models.Category;
 import edu.vinaenter.services.CategoryService;
@@ -34,13 +32,13 @@ public class TestJdbcController {
 		return "test/selectAll";
 	}
 	
-	@GetMapping("cat/addNew")
-	public String addNew(Model model) {
+	@GetMapping("cat/addCat")
+	public String addCat() {
 		return "test/add";
 	}
 	
-	@PostMapping("cat/addNew")
-	public String addNew(@ModelAttribute Category category, RedirectAttributes re) throws NameException {
+	@PostMapping("cat/addCat")
+	public String addCat(@ModelAttribute Category category, RedirectAttributes re) throws NameException {
 		
 		int saved = categoryService.save(category);
 		
@@ -50,11 +48,11 @@ public class TestJdbcController {
 		} else {
 			re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
 		}
-		return "redirect:/cat/addNew";
+		return "redirect:/cat/addCat";
 	}
 	
 	@GetMapping("cat/del/{id}")
-	public String addNew(@PathVariable int id, RedirectAttributes re) {
+	public String delCat(@PathVariable int id, RedirectAttributes re) {
 		int deleted = categoryService.delete(id);
 		if(DaoUtil.isSuccess(deleted)) {
 			re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_DEL);
@@ -65,14 +63,14 @@ public class TestJdbcController {
 	}
 	
 	@GetMapping("cat/edit/{id}")
-	public String addNew(@PathVariable int id, Model model) {
+	public String editCat(@PathVariable int id, Model model) {
 		Category cat = categoryService.findById(id);
 		model.addAttribute("cat", cat);
 		return "test/edit";
 	}
 	
 	@PostMapping("cat/edit/{id}")
-	public String addNew(@PathVariable int id, 
+	public String editCat(@PathVariable int id, 
 			@ModelAttribute Category cat, 
 			Model model, RedirectAttributes re) {
 		cat.setId(id);

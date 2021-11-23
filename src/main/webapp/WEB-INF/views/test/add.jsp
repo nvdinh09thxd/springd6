@@ -13,7 +13,7 @@
 		<div class="msg">
 			${msg}
 		</div>
-		<form method="post" action="${pageContext.request.contextPath}/jdbc/cat/addNew">
+		<form method="post" action="${pageContext.request.contextPath}/jdbc/cat/addCat">
 			<table border="1" style="margin: 20px auto; width:500px">
 				<tr>
 					<th>Name</th>

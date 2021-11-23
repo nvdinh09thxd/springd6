@@ -17,7 +17,7 @@
 			<table border="1" style="margin: 20px auto; width:500px">
 				<tr>
 					<th>ID</th>
-					<td><input type="text" value="${cat.id}" disabled="disabled" name="name" size="99%" /></td>
+					<td><input type="text" value="${cat.id}" disabled name="name" size="99%" /></td>
 				</tr>
 				<tr>
 					<th>Name</th>

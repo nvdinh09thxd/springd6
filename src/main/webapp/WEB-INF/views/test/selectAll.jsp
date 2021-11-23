@@ -10,7 +10,7 @@
 <body>
 	<h1>Select ALL by JDBC Templates</h1>
 	<div>
-		<a href="${pageContext.request.contextPath}/jdbc/cat/addNew">Add new</a>
+		<a href="${pageContext.request.contextPath}/jdbc/cat/addCat">Add Cat</a>
 	</div>
 	<div class="msg">
 		${msg}
