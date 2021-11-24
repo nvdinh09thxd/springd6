@@ -12,8 +12,8 @@
 	<div>
 		<a href="${pageContext.request.contextPath}/jdbc/cat/addCat">Add Cat</a>
 	</div>
-	<div class="msg">
-		${msg}
+	<div>
+		<h3 style="color: red; background-color: yellow; text-align: center">${msg}</h3>
 	</div>
 	<div>
 		<c:choose>

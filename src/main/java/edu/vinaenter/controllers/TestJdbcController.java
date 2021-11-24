@@ -21,66 +21,93 @@ import edu.vinaenter.services.CategoryService;
 @Controller
 @RequestMapping("jdbc")
 public class TestJdbcController {
-	
+
 	@Autowired
 	private CategoryService categoryService;
-	
-	@GetMapping("selectAll")
-	public String selectAll(Model model) {
-		List<Category> categories = categoryService.getAll();
-		model.addAttribute("categories", categories);
+
+	@GetMapping("list")
+	public String list() {
 		return "test/selectAll";
 	}
-	
+
+	@GetMapping("selectAll")
+	public String selectAll(Model model, RedirectAttributes re) {
+		try {
+			List<Category> categories = categoryService.getAll();
+			model.addAttribute("categories", categories);
+			return "test/selectAll";
+		} catch (Exception e) {
+			re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+			return "redirect:/jdbc/list";
+		}
+	}
+
 	@GetMapping("cat/addCat")
 	public String addCat() {
 		return "test/add";
 	}
-	
+
 	@PostMapping("cat/addCat")
 	public String addCat(@ModelAttribute Category category, RedirectAttributes re) throws NameException {
-		
-		int saved = categoryService.save(category);
-		
-		if(DaoUtil.isSuccess(saved)) {
-			re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_ADD);
-			return "redirect:/jdbc/selectAll";
-		} else {
+
+		try {
+			int saved = categoryService.save(category);
+
+			if (DaoUtil.isSuccess(saved)) {
+				re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_ADD);
+				return "redirect:/jdbc/selectAll";
+			} else {
+				re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+				return "redirect:/jdbc/cat/addCat";
+			}
+		} catch (Exception e) {
 			re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+			return "redirect:/jdbc/cat/addCat";
 		}
-		return "redirect:/cat/addCat";
 	}
-	
+
 	@GetMapping("cat/del/{id}")
 	public String delCat(@PathVariable int id, RedirectAttributes re) {
-		int deleted = categoryService.delete(id);
-		if(DaoUtil.isSuccess(deleted)) {
-			re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_DEL);
-		} else {
+		try {
+			int deleted = categoryService.delete(id);
+			if (DaoUtil.isSuccess(deleted)) {
+				re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_DEL);
+			} else {
+				re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+			}
+		} catch (Exception e) {
 			re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
 		}
 		return "redirect:/jdbc/selectAll";
 	}
-	
+
 	@GetMapping("cat/edit/{id}")
-	public String editCat(@PathVariable int id, Model model) {
-		Category cat = categoryService.findById(id);
-		model.addAttribute("cat", cat);
-		return "test/edit";
-	}
-	
-	@PostMapping("cat/edit/{id}")
-	public String editCat(@PathVariable int id, 
-			@ModelAttribute Category cat, 
-			Model model, RedirectAttributes re) {
-		cat.setId(id);
-		int updated = categoryService.update(cat);
-		if(DaoUtil.isSuccess(updated)) {
-			re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_UPDATE);
-			return "redirect:/jdbc/selectAll";
-		} else {
+	public String editCat(@PathVariable int id, Model model, RedirectAttributes re) {
+		try {
+			Category cat = categoryService.findById(id);
+			model.addAttribute("cat", cat);
+			return "test/edit";
+		} catch (Exception e) {
 			re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+			return "redirect:/jdbc/selectAll";
 		}
-		return "redirect:/cat/edit/"+id;
+	}
+
+	@PostMapping("cat/edit/{id}")
+	public String editCat(@PathVariable int id, @ModelAttribute Category cat, Model model, RedirectAttributes re) {
+		cat.setId(id);
+		try {
+			int updated = categoryService.update(cat);
+			if (DaoUtil.isSuccess(updated)) {
+				re.addFlashAttribute("msg", MessageConstant.MSG_SUCCESS_UPDATE);
+				return "redirect:/jdbc/selectAll";
+			} else {
+				re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+				return "redirect:/jdbc/cat/edit/" + id;
+			}
+		} catch (Exception e) {
+			re.addFlashAttribute("msg", MessageConstant.MSG_ERROR);
+			return "redirect:/jdbc/cat/edit/" + id;
+		}
 	}
 }

@@ -10,8 +10,8 @@
 <body>
 	<h1>Edit Category by JDBC Templates</h1>
 	<div>
-		<div class="msg">
-			${msg}
+		<div>
+			<h3 style="color: red; background-color: yellow; text-align: center">${msg}</h3>
 		</div>
 		<form method="post" action="${pageContext.request.contextPath}/jdbc/cat/edit/${cat.id}">
 			<table border="1" style="margin: 20px auto; width:500px">

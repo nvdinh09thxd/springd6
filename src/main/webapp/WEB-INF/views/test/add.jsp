@@ -10,10 +10,10 @@
 <body>
 	<h1>Add Category by JDBC Templates</h1>
 	<div>
-		<div class="msg">
-			${msg}
+		<div>
+			<h3 style="color: red; background-color: yellow; text-align: center">${msg}</h3>
 		</div>
-		<form method="post" action="${pageContext.request.contextPath}/jdbc/cat/addCat">
+		<form method="post">
 			<table border="1" style="margin: 20px auto; width:500px">
 				<tr>
 					<th>Name</th>
